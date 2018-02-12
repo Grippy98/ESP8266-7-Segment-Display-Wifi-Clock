@@ -1,4 +1,10 @@
-// Arduino Uno compatible pin assignments
+//Andrei Aldea 2018, based on code by Mel Lester Jr. , adapted for Clock Functionality and use on the ESP8266
+//Please note this Code uses the RX pin as one of the outputs, so you cannot use the Serial COM on the ESP8266 in the code
+
+#include <ESP8266WiFi.h>
+#include <time.h>
+
+// ESP8266 Compatible Pin Assignment
 int aPin = 14;  //         A
 int bPin = 16;  //    ________
 int cPin = 9;  //    |        |
@@ -10,8 +16,8 @@ int GND1 = 2; //     |        |
 int GND2 = 4; //   E |        |   C
 int GND3 = 5; //     |________|
 int GND4 = 3; //       
-int dPnt = 12;  //         D       O dPnt
-// decimal point is not used in this example code, but is included just because
+int dPnt = 12;//         D       O dPnt
+
 int dig1 = 0;
 int dig2 = 0;
 int dig3 = 0;
@@ -19,11 +25,8 @@ int dig4 = 0;
 
 int DTime = 1; //Delaytime for itterations, 16ms default, 4 ms now
 
-#include <ESP8266WiFi.h>
-#include <time.h>
-
-const char* ssid = "Grippy-Hawk";
-const char* password = "grippen98";
+const char* ssid = ""; //Change the next 3 lines!
+const char* password = "";
 int timezone = -5; //EST is UTC-5
 int dst = 0;
 
@@ -48,12 +51,12 @@ void setup()
   
   WiFi.mode(WIFI_STA);
   WiFi.begin(ssid, password);
-  configTime(timezone * 3600, dst * 0, "pool.ntp.org", "time.nist.gov");
-  /*while (!time(nullptr)) {
+  configTime(timezone * 3600, dst * 0, "pool.ntp.org", "time.nist.gov"); //Time server
+  while (!time(nullptr)) { //Wait for connection to get actual time
       delay(1000);
       digitalWrite( GND4, LOW);    //digit 4
       pickNumber(0);
-  }*/
+  } 
 }
 
 void loop()
@@ -69,29 +72,14 @@ void loop()
   struct tm * timeinfo;
   time(&now);
   timeinfo = localtime(&now);  
-  //Serial.println(timeinfo->tm_hour);
-  //delay(1000);
 
-  dig1 = timeinfo->tm_hour/10;
+  dig1 = timeinfo->tm_hour/10; //Abusing integer math a bit to get the digits
   dig2 = timeinfo->tm_hour%10;
   dig3 = timeinfo->tm_min/10;
   dig4 = timeinfo->tm_min%10;
 
-/*  //counter
-while (i <10000)
-{
-  if (millis() > timer) { // increment counter
-    i++;
-    if (i > 9999) {
-      i = 0;
-    }
-    dig1 = i / 1000;
-    dig2 = (i - (dig1 * 1000)) / 100;
-    dig3 = (i - (dig1 * 1000 + dig2 * 100)) / 10;
-    dig4 = i % 10;
-    timer = millis() + 500;
-  }
-*/
+  //The following code scans really fast throug the digits so it creates persistance of vision... aditional delays really screw with this.
+
   digitalWrite( GND4, LOW);    //digit 4
   pickNumber(dig4);
   delay(DTime);
@@ -104,7 +92,7 @@ while (i <10000)
  
   digitalWrite( GND2, LOW);   //digit 2
   pickNumber(dig2); 
-  digitalWrite(dPnt, HIGH); //Middle decimal point
+  digitalWrite(dPnt, HIGH); //Middle decimal point always ON
   delay(DTime);
   digitalWrite( GND2, HIGH);
   digitalWrite(dPnt, LOW);
@@ -113,7 +101,7 @@ while (i <10000)
   pickNumber(dig1);
   delay(DTime);
   digitalWrite( GND1, HIGH);
-} // end loop
+}
  
 void pickNumber(int x){
    switch(x){
@@ -251,6 +239,8 @@ void zero()
   digitalWrite( fPin, HIGH);
   digitalWrite( gPin, LOW);
 }
+
+//The following isn't acutally used but you get an idea as to how you could implement a limited character set on these displays.
 
 void a()
 {
