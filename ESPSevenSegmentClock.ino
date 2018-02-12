@@ -121,13 +121,14 @@ void pickNumber(int x){
 
 void clearLEDs()
 {  
-  digitalWrite(  2, LOW); // A
-  digitalWrite(  3, LOW); // B
-  digitalWrite(  4, LOW); // C
-  digitalWrite(  5, LOW); // D
-  digitalWrite(  6, LOW); // E
-  digitalWrite(  7, LOW); // F
-  digitalWrite(  8, LOW); // G
+  digitalWrite(  aPin, LOW); // A
+  digitalWrite(  bPin, LOW); // B
+  digitalWrite(  cPin, LOW); // C
+  digitalWrite(  dPin, LOW); // D
+  digitalWrite(  ePin, LOW); // E
+  digitalWrite(  fPin, LOW); // F
+  digitalWrite(  gPit, LOW); // G
+  digitalWrite(  dPnt, LOW); // DecimalPoint
 }
 
 void one()
