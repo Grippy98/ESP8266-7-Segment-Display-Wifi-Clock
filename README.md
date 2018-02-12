@@ -1,1 +1,1 @@
-# ESP1866 7 Segment Display Wifi Clock
+# ESP8266 (NodeMCU) 7 Segment Display Wifi Clock
