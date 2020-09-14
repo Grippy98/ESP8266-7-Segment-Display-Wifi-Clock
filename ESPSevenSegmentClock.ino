@@ -127,7 +127,7 @@ void clearLEDs()
   digitalWrite(  dPin, LOW); // D
   digitalWrite(  ePin, LOW); // E
   digitalWrite(  fPin, LOW); // F
-  digitalWrite(  gPit, LOW); // G
+  digitalWrite(  gPin, LOW); // G
   digitalWrite(  dPnt, LOW); // DecimalPoint
 }
 
